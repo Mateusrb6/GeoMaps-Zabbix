@@ -24,10 +24,16 @@ O objetivo é fornecer uma **visão geográfica dinâmica** da infraestrutura mo
 
 ## 🖼️ Demonstração Visual
 ### Screenshot Incidentes
-![Mapa de Hosts e Rotas](assets/3662eac9-6b8f-492a-8fd3-ab9cd2d91655)  
 
-### GIF de Interação
-![Exemplo Interativo](/assets/82049fb0-fd0a-4c89-ab07-bd140a602548)
+<img width="959" height="493" alt="image" src="https://github.com/user-attachments/assets/c1acd49d-0020-492b-8048-f505e96efc13" />
+
+
+### Modulo de Interação
+
+
+
+https://github.com/user-attachments/assets/a169044d-2fa0-40e1-bef5-6f0ffa9d215b
+
 
 
 ---
