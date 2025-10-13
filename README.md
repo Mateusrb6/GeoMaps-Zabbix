@@ -2,15 +2,11 @@
 
 
 
-https://github.com/user-attachments/assets/b3591142-117c-4d8a-b06e-a72023c42448
-
-
-
 [![License: GPL v2](https://img.shields.io/badge/License-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 [![Zabbix](https://img.shields.io/badge/Zabbix-7.0%2B-red)](https://www.zabbix.com/)
 [![Status](https://img.shields.io/badge/Status-Active-success.svg)](#)
 [![JavaScript](https://img.shields.io/badge/Language-JavaScript-yellow.svg)](#)
-[![Last Commit](https://img.shields.io/github/last-commit/vinicius-sousa/zabbix-module-geomap)](https://github.com/vinicius-sousa/zabbix-module-geomap/commits/main)
+[![Last Commit](https://img.shields.io/github/last-commit/VSousa-7/GeoMaps-Zabbix)](https://github.com/VSousa-7/GeoMaps-Zabbix/commits/main)
 
 ---
 
@@ -23,6 +19,17 @@ Ele oferece uma forma **interativa e visual** de exibir:
 - **Incidentes e alertas ativos**, com destaque visual  
 
 O objetivo é fornecer uma **visão geográfica dinâmica** da infraestrutura monitorada, facilitando a **detecção e análise de falhas em tempo real**.
+
+---
+
+## 🖼️ Demonstração Visual
+### Screenshot
+![Mapa de Hosts e Rotas](assets/screenshot.png)  
+
+### GIF de Interação
+![Exemplo Interativo](assets/demo.gif)  
+
+> Substitua `https://github.com/user-attachments/assets/82049fb0-fd0a-4c89-ab07-bd140a602548)` pelos arquivos reais no seu repositório.
 
 ---
 
@@ -54,30 +61,3 @@ Clone o módulo no diretório de módulos do Zabbix:
 ```bash
 cd /usr/share/zabbix/modules/
 git clone https://github.com/vinicius-sousa/zabbix-module-geomap.git
-```
-```
-1. Reinicie o Zabbix Frontend.
-2. Acesse Administração → Módulos e habilite o GeoMap.
-   ⚠️ Importante: desative temporariamente o módulo nativo GeoMaps.
-3. Atualize o dashboard para visualizar o novo widget.
-```
-
-👨‍💻 Autor
-
-Vinicius Sousa
-
-LinkedIn: https://www.linkedin.com/in/vin%C3%ADcius-sousa-903ba6180/
-
-E-mail: viniciussousati60@gmail.com
-
-📄 Licença
-
-Este projeto é distribuído sob a licença GNU GPL v2.
-Veja o arquivo LICENSE
- para mais detalhes.
-
-🔗 Links Úteis
-
-Zabbix Official
-
-Leaflet.js
