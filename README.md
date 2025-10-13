@@ -2,13 +2,15 @@
 
 
 
-https://github.com/user-attachments/assets/a7692613-f732-46fc-81f4-b45b0b4a8791
+https://github.com/user-attachments/assets/b3591142-117c-4d8a-b06e-a72023c42448
 
 
 
 [![License: GPL v2](https://img.shields.io/badge/License-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
-[![Zabbix](https://img.shields.io/badge/Zabbix-6.4%2B-red)](https://www.zabbix.com/)
+[![Zabbix](https://img.shields.io/badge/Zabbix-7.0%2B-red)](https://www.zabbix.com/)
 [![Status](https://img.shields.io/badge/Status-Active-success.svg)](#)
+[![JavaScript](https://img.shields.io/badge/Language-JavaScript-yellow.svg)](#)
+[![Last Commit](https://img.shields.io/github/last-commit/vinicius-sousa/zabbix-module-geomap)](https://github.com/vinicius-sousa/zabbix-module-geomap/commits/main)
 
 ---
 
@@ -25,21 +27,40 @@ O objetivo é fornecer uma **visão geográfica dinâmica** da infraestrutura mo
 ---
 
 ## ⚙️ Recursos Principais
-- ✅ **Exibição de rotas e enlaces personalizados** em formato GeoJSON  
-- ✅ **Integração nativa com a API do Zabbix**  
-- ✅ **Atualização em tempo real** com base no status dos hosts e interfaces  
-- ✅ **Suporte a temas claro e escuro**  
-- ✅ **Interface responsiva e interativa** (Leaflet + JavaScript)
+| Recurso | Descrição |
+|---------|-----------|
+| GeoJSON | Exibição de rotas e enlaces personalizados |
+| API Zabbix | Integração nativa para atualizar hosts, rotas e status |
+| Atualização em tempo real | Dados refletidos instantaneamente no mapa |
+| Temas claro/escuro | Compatível com interface clara e escura |
+| Interface interativa | Responsiva, baseada em Leaflet + JavaScript |
 
 ---
 
-## 📦 Instalação
+## 📦 Requisitos e Compatibilidade
+
+| Componente | Versão mínima |
+|------------|---------------|
+| Zabbix Server | 7.0 |
+| PHP | 8.1+ |
+| Leaflet.js | 1.9+ |
+
+---
+
+## 📥 Instalação
 
 Clone o módulo no diretório de módulos do Zabbix:
 
 ```bash
 cd /usr/share/zabbix/modules/
 git clone https://github.com/vinicius-sousa/zabbix-module-geomap.git
+```
+```
+1. Reinicie o Zabbix Frontend.
+2. Acesse Administração → Módulos e habilite o GeoMap.
+   ⚠️ Importante: desative temporariamente o módulo nativo GeoMaps.
+3. Atualize o dashboard para visualizar o novo widget.
+```
 
 👨‍💻 Autor
 
@@ -54,3 +75,9 @@ E-mail: viniciussousati60@gmail.com
 Este projeto é distribuído sob a licença GNU GPL v2.
 Veja o arquivo LICENSE
  para mais detalhes.
+
+🔗 Links Úteis
+
+Zabbix Official
+
+Leaflet.js
