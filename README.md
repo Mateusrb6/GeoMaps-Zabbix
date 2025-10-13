@@ -1,49 +1,53 @@
-#🗺️ Zabbix Module – GeoMap
+# 🗺️ Zabbix Module – GeoMap
 
 
 
+https://github.com/user-attachments/assets/a7692613-f732-46fc-81f4-b45b0b4a8791
 
-🌍 Visão geral
 
-O GeoMap é um módulo desenvolvido com base no módulo GeoMaps nativo do Zabbix.
-Ele oferece uma forma mais interativa e visual de exibir:
 
-- Hosts monitorados diretamente no mapa,
+[![License: GPL v2](https://img.shields.io/badge/License-GPLv2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+[![Zabbix](https://img.shields.io/badge/Zabbix-6.4%2B-red)](https://www.zabbix.com/)
+[![Status](https://img.shields.io/badge/Status-Active-success.svg)](#)
 
-- Rotas de rede (ex: enlaces de fibra óptica),
+---
 
-- Incidentes e alertas ativos, com destaque visual.
+## 🌍 Visão Geral
+O **GeoMap** é um módulo desenvolvido com base no módulo **GeoMaps** nativo do Zabbix.  
+Ele oferece uma forma **interativa e visual** de exibir:
 
-O objetivo é fornecer uma visão geográfica dinâmica da infraestrutura monitorada, facilitando a detecção e análise de falhas em tempo real.
+- **Hosts monitorados** diretamente no mapa  
+- **Rotas de rede** (ex: enlaces de fibra óptica)  
+- **Incidentes e alertas ativos**, com destaque visual  
 
-⚙️ Recursos principais
+O objetivo é fornecer uma **visão geográfica dinâmica** da infraestrutura monitorada, facilitando a **detecção e análise de falhas em tempo real**.
 
-✅ Exibição de rotas e enlaces personalizados em formato GeoJSON.
-✅ Integração nativa com a API do Zabbix.
-✅ Atualização em tempo real com base no status dos hosts e interfaces.
-✅ Suporte a temas claro e escuro.
-✅ Interface responsiva e interativa (Leaflet + JavaScript).
+---
 
-https://github.com/user-attachments/assets/49cc057f-71fd-4dc8-ac8a-0cf4df347bec
+## ⚙️ Recursos Principais
+- ✅ **Exibição de rotas e enlaces personalizados** em formato GeoJSON  
+- ✅ **Integração nativa com a API do Zabbix**  
+- ✅ **Atualização em tempo real** com base no status dos hosts e interfaces  
+- ✅ **Suporte a temas claro e escuro**  
+- ✅ **Interface responsiva e interativa** (Leaflet + JavaScript)
 
-#Instalação
+---
 
+## 📦 Instalação
+
+Clone o módulo no diretório de módulos do Zabbix:
+
+```bash
 cd /usr/share/zabbix/modules/
 git clone https://github.com/vinicius-sousa/zabbix-module-geomap.git
 
-Depois:
-
-Reinicie o Zabbix Frontend.
-
-Acesse Administração → Módulos e habilite o “GeoMap Plus”.
-
-Atualize o dashboard para visualizar o novo widget.
-
-
 👨‍💻 Autor
 
-Desenvolvido por Vinicius Sousa
-📧 [Contato profissional opcional, se quiser colocar depois]
+Vinicius Sousa
+
+LinkedIn: https://www.linkedin.com/in/vin%C3%ADcius-sousa-903ba6180/
+
+E-mail: viniciussousati60@gmail.com
 
 📄 Licença
 
