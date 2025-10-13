@@ -23,13 +23,12 @@ O objetivo é fornecer uma **visão geográfica dinâmica** da infraestrutura mo
 ---
 
 ## 🖼️ Demonstração Visual
-### Screenshot
-![Mapa de Hosts e Rotas](assets/screenshot.png)  
+### Screenshot Incidentes
+![Mapa de Hosts e Rotas](assets/3662eac9-6b8f-492a-8fd3-ab9cd2d91655)  
 
 ### GIF de Interação
-![Exemplo Interativo](assets/demo.gif)  
+![Exemplo Interativo](/assets/82049fb0-fd0a-4c89-ab07-bd140a602548)
 
-> Substitua `https://github.com/user-attachments/assets/82049fb0-fd0a-4c89-ab07-bd140a602548)` pelos arquivos reais no seu repositório.
 
 ---
 
@@ -61,3 +60,35 @@ Clone o módulo no diretório de módulos do Zabbix:
 ```bash
 cd /usr/share/zabbix/modules/
 git clone https://github.com/vinicius-sousa/zabbix-module-geomap.git
+```
+
+```
+1. Reinicie o Zabbix Frontend.
+2. Acesse Administração → Módulos e habilite o GeoMap.
+   ⚠️ Desative temporariamente o módulo nativo GeoMaps.
+3. Atualize o dashboard para visualizar o widget.
+```
+
+⚠️ Troubleshooting
+
+Mapa não aparece → verifique permissões e cache do navegador
+
+Dados desatualizados → confirme se a API do Zabbix está acessível
+
+Incidentes não aparecem → cheque a configuração de triggers e grupos no Zabbix
+
+
+
+👨‍💻 Autor
+
+Vinicius Sousa
+
+LinkedIn: https://www.linkedin.com/in/vin%C3%ADcius-sousa-903ba6180/
+
+E-mail: viniciussousati60@gmail.com
+
+📄 Licença
+
+Este projeto é distribuído sob a licença GNU GPL v2.
+Veja o arquivo LICENSE
+ para mais detalhes.
