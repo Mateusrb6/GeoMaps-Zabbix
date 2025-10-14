@@ -75,6 +75,8 @@ git clone https://github.com/vinicius-sousa/zabbix-module-geomap.git
 3. Atualize o dashboard para visualizar o widget.
 ```
 ##🛠️ Configuração do módulo
+
+
 ## Arquivo JavaScript principal
 
 Após a instalação, edite o arquivo:
