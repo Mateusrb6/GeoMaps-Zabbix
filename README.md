@@ -74,7 +74,9 @@ git clone https://github.com/vinicius-sousa/zabbix-module-geomap.git
    ⚠️ Desative temporariamente o módulo nativo GeoMaps.
 3. Atualize o dashboard para visualizar o widget.
 ```
-##🛠️ Configuração do módulo
+
+
+#🛠️ Configuração do módulo
 
 
 ## Arquivo JavaScript principal
