@@ -76,9 +76,9 @@ git clone https://github.com/vinicius-sousa/zabbix-module-geomap.git
 ```
 
 ---
-
-#🛠️ Configuração do módulo
-
+```
+🛠️ Configuração do módulo
+```
 ---
 
 ## Arquivo JavaScript principal
@@ -132,7 +132,7 @@ Exemplo simples de estrutura:
 
 ---
 
-##⚠️ Troubleshooting
+⚠️ Troubleshooting
 
 Mapa não aparece → verifique permissões e cache do navegador
 
@@ -142,7 +142,7 @@ Incidentes não aparecem → cheque a configuração de triggers e grupos no Zab
 
 ---
 
-##👨‍💻 Autor
+👨‍💻 Autor
 
 Vinicius Sousa
 
@@ -152,7 +152,7 @@ E-mail: viniciussousati60@gmail.com
 
 ---
 
-##📄 Licença
+📄 Licença
 
 Este projeto é distribuído sob a licença GNU GPL v2.
 Veja o arquivo LICENSE
