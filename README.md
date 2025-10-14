@@ -75,6 +75,7 @@ git clone https://github.com/vinicius-sousa/zabbix-module-geomap.git
 3. Atualize o dashboard para visualizar o widget.
 ```
 
+---
 
 #🛠️ Configuração do módulo
 
@@ -139,7 +140,7 @@ Dados desatualizados → confirme se a API do Zabbix está acessível
 
 Incidentes não aparecem → cheque a configuração de triggers e grupos no Zabbix
 
-
+---
 
 ##👨‍💻 Autor
 
@@ -148,6 +149,8 @@ Vinicius Sousa
 LinkedIn: https://www.linkedin.com/in/vin%C3%ADcius-sousa-903ba6180/
 
 E-mail: viniciussousati60@gmail.com
+
+---
 
 ##📄 Licença
 
