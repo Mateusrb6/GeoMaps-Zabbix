@@ -78,6 +78,7 @@ git clone https://github.com/vinicius-sousa/zabbix-module-geomap.git
 
 #🛠️ Configuração do módulo
 
+---
 
 ## Arquivo JavaScript principal
 
@@ -127,6 +128,8 @@ Exemplo simples de estrutura:
 ```
 
 💡 Dica: mantenha o nome do arquivo como routes.geojson, pois o módulo faz a leitura direta desse nome.
+
+---
 
 ##⚠️ Troubleshooting
 
