@@ -74,8 +74,8 @@ git clone https://github.com/vinicius-sousa/zabbix-module-geomap.git
    ⚠️ Desative temporariamente o módulo nativo GeoMaps.
 3. Atualize o dashboard para visualizar o widget.
 ```
-🛠️ Configuração do módulo
-1. Arquivo JavaScript principal
+##🛠️ Configuração do módulo
+## Arquivo JavaScript principal
 
 Após a instalação, edite o arquivo:
 ``` 
@@ -123,7 +123,8 @@ Exemplo simples de estrutura:
 ```
 
 💡 Dica: mantenha o nome do arquivo como routes.geojson, pois o módulo faz a leitura direta desse nome.
-⚠️ Troubleshooting
+
+##⚠️ Troubleshooting
 
 Mapa não aparece → verifique permissões e cache do navegador
 
@@ -133,7 +134,7 @@ Incidentes não aparecem → cheque a configuração de triggers e grupos no Zab
 
 
 
-👨‍💻 Autor
+##👨‍💻 Autor
 
 Vinicius Sousa
 
@@ -141,7 +142,7 @@ LinkedIn: https://www.linkedin.com/in/vin%C3%ADcius-sousa-903ba6180/
 
 E-mail: viniciussousati60@gmail.com
 
-📄 Licença
+##📄 Licença
 
 Este projeto é distribuído sob a licença GNU GPL v2.
 Veja o arquivo LICENSE
