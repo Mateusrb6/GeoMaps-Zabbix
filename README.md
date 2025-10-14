@@ -74,7 +74,55 @@ git clone https://github.com/vinicius-sousa/zabbix-module-geomap.git
    ⚠️ Desative temporariamente o módulo nativo GeoMaps.
 3. Atualize o dashboard para visualizar o widget.
 ```
+🛠️ Configuração do módulo
+1. Arquivo JavaScript principal
 
+Após a instalação, edite o arquivo:
+``` 
+/usr/share/zabbix/widgets/geomap/assets/js/class.widget.js
+```
+
+Dentro dele, você pode configurar:
+
+Endpoints de API personalizados (caso queira integração dinâmica)
+
+Parâmetros de atualização automática
+
+Estilos e ícones de hosts
+
+## Arquivo de rotas GeoJSON
+
+Adicione o seu arquivo de rotas no caminho:
+```
+/usr/share/zabbix/modules/geomap/assets/data/routes.geojson
+```
+
+O arquivo deve conter as rotas e enlaces de rede no formato GeoJSON.
+Exemplo simples de estrutura:
+
+```
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Rota 01 - Matriz → Filial A",
+        "status": "up"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-39.312, -4.220],
+          [-39.521, -4.170]
+        ]
+      }
+    }
+  ]
+}
+```
+
+💡 Dica: mantenha o nome do arquivo como routes.geojson, pois o módulo faz a leitura direta desse nome.
 ⚠️ Troubleshooting
 
 Mapa não aparece → verifique permissões e cache do navegador
