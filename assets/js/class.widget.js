@@ -1,8 +1,14 @@
 // == Geomap 7.0
 // == Author: Vinicius Sousa
 // == Contato: https://github.com/VSousa-7
-// == Version: 1.0
+// == Version: 1.1
 // == Data: 24/09/2025
+// ==
+// == Segurança (v1.1 - Mateusrb6):
+// ==   - Removido token de API e URL hardcoded do JavaScript.
+// ==   - Chamadas à API do Zabbix movidas para o backend PHP (WidgetRouteData),
+// ==     que utiliza a sessão autenticada do usuário logado no Zabbix.
+// ==   - O JavaScript nunca mais expõe credenciais ao cliente.
 
 class CWidgetGeoMap extends CWidget {
 
@@ -38,10 +44,9 @@ class CWidgetGeoMap extends CWidget {
 		this._home_coords = {};
 		this._severity_levels = new Map();
 
-        	this._apiAuthToken = 'Token API'; // Insira Token API (Pode gerar diretamente no Zabbix)
-        	this._apiUrl = 'http://IP do SERVER API/api_jsonrpc.php';
-
 		// [ROTAS] estado para camadas de rotas
+		// SEGURANÇA: Não há mais token ou URL de API exposta aqui.
+		// Toda comunicação com o Zabbix é feita via backend PHP (WidgetRouteData).
 		this._routeLayers = [];
 		this._routesLoadedOnce = false;
 	}
@@ -844,119 +849,160 @@ class CWidgetGeoMap extends CWidget {
     }
 
     // ---------------- ROUTES ----------------
+    // SEGURANÇA: As chamadas à API do Zabbix foram movidas para o backend PHP
+    // (actions/WidgetRouteData.php). O JavaScript agora consome um endpoint
+    // interno do próprio Zabbix, protegido pela sessão do usuário logado.
+    // Nenhum token ou credencial fica exposto no código do cliente.
     async _addRoutes() {
-    // remove layers antigas
-    this._routeLayers.forEach(layer => this._map.removeLayer(layer));
-    this._routeLayers = [];
+        // Remove layers antigas
+        this._routeLayers.forEach(layer => this._map.removeLayer(layer));
+        this._routeLayers = [];
 
-    // carrega geojson das rotas
-    const geoData = await fetch('widgets/geomap/assets/data/routes.geojson')
-        .then(response => response.json());
-
-    // funções auxiliares para status e tráfego
-    const fetchItemStatus = async (itemid) => {
-        if (!itemid) return null;
+        // Carrega GeoJSON das rotas do servidor local
+        let geoData;
         try {
-            const response = await fetch(this._apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    jsonrpc: "2.0",
-                    method: "item.get",
-                    params: { itemids: [itemid], output: ["itemid", "lastvalue"] },
-                    auth: this._apiAuthToken,
-                    id: 1
-                })
-            });
-            const data = await response.json();
-            if (!data.result || data.result.length === 0) return null;
-            const lastvalue = parseInt(data.result[0].lastvalue);
-            if (lastvalue === 2) return CWidgetGeoMap.SEVERITY_DISASTER;
-            if (lastvalue === 1) return CWidgetGeoMap.SEVERITY_NO_PROBLEMS;
-            return null;
-        } catch (error) {
-            console.error('Erro ao buscar status da rota:', error);
-            return null;
-        }
-    };
-
-    const fetchTrafficValue = async (hostid, key_) => {
-        if (!hostid || !key_) return '<i>Indisponível</i>';
-        try {
-            const response = await fetch(this._apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    jsonrpc: "2.0",
-                    method: "item.get",
-                    params: { hostids: [hostid], search: { key_ }, output: ["itemid", "lastvalue"] },
-                    auth: this._apiAuthToken,
-                    id: 2
-                })
-            });
-            const data = await response.json();
-            if (data.result.length > 0) {
-                const bps = parseFloat(data.result[0].lastvalue);
-                const gbps = (bps / 1_000_000_000).toFixed(2);
-                return `${gbps} Gbps`;
+            const routeResponse = await fetch('widgets/geomap/assets/data/routes.geojson');
+            if (!routeResponse.ok) {
+                console.error('Falha ao carregar routes.geojson:', routeResponse.status);
+                return;
             }
+            geoData = await routeResponse.json();
         } catch (err) {
-            console.error('Erro ao buscar tráfego:', err);
+            console.error('Erro ao carregar routes.geojson:', err);
+            return;
         }
-        return '<i>Indisponível</i>';
-    };
 
-    // cria geojson layer
-    const geojsonLayer = L.geoJSON(geoData, {
-        style: { color: '#999999', weight: 6, opacity: 1.0 },
-        onEachFeature: (feature, layer) => {
-            const { name, itemid, hostid, key_traffic_in, key_traffic_out } = feature.properties;
-            layer.bindPopup(`<b>Carregando dados da rota...</b>`);
-            layer.on('mouseover', function (e) { this.openPopup(e.latlng); });
-            layer.on('mouseout', function () { this.closePopup(); });
+        /**
+         * Busca o status de um item via backend PHP seguro.
+         * O PHP usa a sessão autenticada do usuário — sem token exposto.
+         *
+         * @param {string|number} itemid
+         * @returns {number|null} Severidade do item ou null.
+         */
+        const fetchItemStatus = async (itemid) => {
+            if (!itemid) return null;
+            try {
+                const params = new URLSearchParams({
+                    action: 'item_status',
+                });
+                // Adiciona os itemids como array
+                params.append('itemids[]', itemid);
 
-            const updateLayerData = async () => {
-                const severity = await fetchItemStatus(itemid);
-                const severityInfo = this._severity_levels.get(severity ?? 2) || { color: '#999999', name: 'Desconhecido' };
-                feature.properties.status = severity === CWidgetGeoMap.SEVERITY_NO_PROBLEMS ? 'up' : 'down';
+                const response = await fetch(
+                    `zabbix.php?${params.toString()}`,
+                    { headers: { 'X-Requested-With': 'XMLHttpRequest' } }
+                );
 
-                const statusText = severity === CWidgetGeoMap.SEVERITY_NO_PROBLEMS
-                    ? `<span style="color:${severityInfo.color}"><b>UP</b></span>`
-                    : `<span style="color:${severityInfo.color}"><b>${severityInfo.name}</b></span>`;
+                if (!response.ok) return null;
 
-                const trafegoIn = await fetchTrafficValue(hostid, key_traffic_in);
-                const trafegoOut = await fetchTrafficValue(hostid, key_traffic_out);
+                const data = await response.json();
+                if (!data.result || data.result.length === 0) return null;
 
-                const popupContent = `
-                    <b>Rota:</b> ${name}<br>
-                    <b>Status:</b> ${statusText}<br>
-                    <b>Tráfego In:</b> ${trafegoIn}<br>
-                    <b>Tráfego Out:</b> ${trafegoOut}
-                `;
+                const lastvalue = parseInt(data.result[0].lastvalue, 10);
+                if (lastvalue === 2) return CWidgetGeoMap.SEVERITY_DISASTER;
+                if (lastvalue === 1) return CWidgetGeoMap.SEVERITY_NO_PROBLEMS;
+                return null;
+            } catch (error) {
+                console.error('Erro ao buscar status da rota:', error);
+                return null;
+            }
+        };
 
-                layer.setStyle({ color: severityInfo.color, weight: 6, opacity: 1.0 });
-                layer.setPopupContent(popupContent);
+        /**
+         * Busca os valores de tráfego (entrada e saída) de um host via backend PHP seguro.
+         *
+         * @param {string|number} hostid
+         * @param {string}        key_in    Chave do item de tráfego de entrada.
+         * @param {string}        key_out   Chave do item de tráfego de saída.
+         * @returns {{ in: string, out: string }}
+         */
+        const fetchTrafficValues = async (hostid, key_in, key_out) => {
+            const indisponivel = '<i>Indisponível</i>';
+            if (!hostid || (!key_in && !key_out)) {
+                return { in: indisponivel, out: indisponivel };
+            }
 
-                // atualiza card de alertas
-                const alertCard = document.getElementById('alert-card');
-                if (alertCard) {
-                    alertCard.innerHTML = `<b>Alertas das Rotas</b><br>` +
-                        geoData.features.map(f => {
-                            const sev = this._severity_levels.get(f.properties.status === 'up' ? CWidgetGeoMap.SEVERITY_NO_PROBLEMS : CWidgetGeoMap.SEVERITY_DISASTER);
-                            return `<b>${f.properties.name}</b>: <span style="color:${sev.color}">${sev.name}</span>`;
-                        }).join('<br>');
-                }
-            };
+            try {
+                const params = new URLSearchParams({
+                    action: 'item_traffic',
+                    hostid,
+                    key_in:  key_in  || '',
+                    key_out: key_out || '',
+                });
 
-            // chamada inicial e atualização periódica
-            updateLayerData();
-            setInterval(updateLayerData, 30000); // a cada 30s
-        }
-    });
+                const response = await fetch(
+                    `zabbix.php?${params.toString()}`,
+                    { headers: { 'X-Requested-With': 'XMLHttpRequest' } }
+                );
 
-    geojsonLayer.addTo(this._map);
-    this._routeLayers.push(geojsonLayer);
-}
+                if (!response.ok) return { in: indisponivel, out: indisponivel };
+
+                const data = await response.json();
+                const indexed = data.result || {};
+
+                const formatBps = (val) => {
+                    if (val === undefined || val === null) return indisponivel;
+                    const gbps = (parseFloat(val) / 1_000_000_000).toFixed(2);
+                    return `${gbps} Gbps`;
+                };
+
+                return {
+                    in:  formatBps(indexed[key_in]),
+                    out: formatBps(indexed[key_out]),
+                };
+            } catch (err) {
+                console.error('Erro ao buscar tráfego:', err);
+                return { in: indisponivel, out: indisponivel };
+            }
+        };
+
+        // Cria GeoJSON layer com as rotas
+        const geojsonLayer = L.geoJSON(geoData, {
+            style: { color: '#999999', weight: 6, opacity: 1.0 },
+            onEachFeature: (feature, layer) => {
+                const { name, itemid, hostid, key_traffic_in, key_traffic_out } = feature.properties;
+                layer.bindPopup(`<b>Carregando dados da rota...</b>`);
+                layer.on('mouseover', function (e) { this.openPopup(e.latlng); });
+                layer.on('mouseout', function () { this.closePopup(); });
+
+                const updateLayerData = async () => {
+                    // Faz as duas chamadas ao backend PHP em paralelo
+                    const [severity, traffic] = await Promise.all([
+                        fetchItemStatus(itemid),
+                        fetchTrafficValues(hostid, key_traffic_in, key_traffic_out),
+                    ]);
+
+                    const severityInfo = this._severity_levels.get(severity ?? CWidgetGeoMap.SEVERITY_AVERAGE)
+                        || { color: '#999999', name: 'Desconhecido' };
+
+                    feature.properties.status = severity === CWidgetGeoMap.SEVERITY_NO_PROBLEMS ? 'up' : 'down';
+
+                    const statusText = severity === CWidgetGeoMap.SEVERITY_NO_PROBLEMS
+                        ? `<span style="color:${severityInfo.color}"><b>UP</b></span>`
+                        : `<span style="color:${severityInfo.color}"><b>${severityInfo.name}</b></span>`;
+
+                    const popupContent = `
+                        <b>Rota:</b> ${name}<br>
+                        <b>Status:</b> ${statusText}<br>
+                        <b>Tráfego In:</b> ${traffic.in}<br>
+                        <b>Tráfego Out:</b> ${traffic.out}
+                    `;
+
+                    layer.setStyle({ color: severityInfo.color, weight: 6, opacity: 1.0 });
+                    layer.setPopupContent(popupContent);
+
+                    this._updateAlertCard();
+                };
+
+                // Chamada inicial e atualização periódica (30 segundos)
+                updateLayerData();
+                setInterval(updateLayerData, 30_000);
+            }
+        });
+
+        geojsonLayer.addTo(this._map);
+        this._routeLayers.push(geojsonLayer);
+    }
 
     // ---------------- MAP INIT ----------------
     _initMap(config) {

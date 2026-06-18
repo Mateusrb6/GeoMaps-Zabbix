@@ -30,6 +30,9 @@
 	"actions": {
 		"widget.geomap.view": {
 			"class": "WidgetView"
+		},
+		"widget.geomap.route_data": {
+			"class": "WidgetRouteData"
 		}
 	},
 	"assets": {
